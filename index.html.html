@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LangaService.lk</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f5f4f0;color:#1a1a1a;min-height:100vh}
+h1,h2,h3,h4,.logo{font-family:'Sora',sans-serif}
+
+nav{background:#fff;border-bottom:1px solid #e8e6e0;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-size:20px;font-weight:700;color:#1a1a1a;letter-spacing:-0.5px}
+.logo span{color:#2d7a4f}
+.nav-links{display:flex;gap:8px;align-items:center}
+.btn{padding:8px 16px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid #e0ddd6;background:#fff;color:#1a1a1a;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.btn:hover{background:#f5f4f0}
+.btn-primary{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.btn-primary:hover{background:#2d2d2d}
+
+.hero{background:#1a1a1a;color:#fff;padding:48px 24px 40px;text-align:center}
+.hero-tag{display:inline-block;background:#2d7a4f;color:#fff;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;margin-bottom:20px;letter-spacing:0.5px;text-transform:uppercase}
+.hero h1{font-size:36px;font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:12px}
+.hero h1 span{color:#7dd3a8}
+.hero p{color:#aaa;font-size:14px;margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto}
+
+.search-box{background:#fff;border-radius:16px;padding:16px;max-width:640px;margin:0 auto}
+.search-row{display:flex;gap:8px;align-items:stretch}
+.search-row input{flex:1;padding:10px 14px;border:1px solid #e0ddd6;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;color:#1a1a1a;background:#fafaf8;outline:none}
+.search-row input:focus{border-color:#2d7a4f}
+.search-btn{padding:10px 20px;background:#2d7a4f;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;white-space:nowrap}
+.search-btn:hover{background:#236040}
+
+.district-dropdown{position:relative;flex:0 0 170px}
+.district-selected{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:10px 14px;border:1px solid #e0ddd6;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;color:#1a1a1a;background:#fafaf8;cursor:pointer;user-select:none;transition:border-color 0.15s;height:100%}
+.district-selected:hover{border-color:#2d7a4f}
+.district-selected.open{border-color:#2d7a4f;background:#fff}
+.district-arrow{width:16px;height:16px;flex-shrink:0;transition:transform 0.2s;display:flex;align-items:center;justify-content:center}
+.district-selected.open .district-arrow{transform:rotate(180deg)}
+.district-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.district-menu{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border:1px solid #e0ddd6;border-radius:12px;overflow:hidden;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,0.10);display:none;min-width:180px}
+.district-menu.open{display:block}
+.district-option{padding:9px 14px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.1s;color:#1a1a1a}
+.district-option:hover{background:#f0f9f4;color:#2d7a4f}
+.district-option.selected{background:#f0f9f4;color:#2d7a4f;font-weight:600}
+.district-option .dot{width:6px;height:6px;border-radius:50%;background:#2d7a4f;opacity:0;flex-shrink:0}
+.district-option.selected .dot{opacity:1}
+.district-divider{height:1px;background:#f0ede6;margin:4px 0}
+
+.quick-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.quick-tag{padding:5px 12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;font-size:11px;color:#ccc;cursor:pointer;transition:all 0.15s}
+.quick-tag:hover{background:#2d7a4f;border-color:#2d7a4f;color:#fff}
+
+.stats-bar{background:#2d7a4f;padding:12px 24px;display:flex;justify-content:center;gap:32px}
+.stat{text-align:center;color:#fff}
+.stat-num{font-family:'Sora',sans-serif;font-size:20px;font-weight:700}
+.stat-label{font-size:11px;color:rgba(255,255,255,0.75);margin-top:1px}
+
+.section{max-width:900px;margin:0 auto;padding:32px 16px}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.section-title{font-size:20px;font-weight:700;letter-spacing:-0.3px}
+.see-all{font-size:13px;color:#2d7a4f;cursor:pointer;font-weight:500;border:none;background:none}
+
+.cats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(min-width:600px){.cats-grid{grid-template-columns:repeat(6,1fr)}}
+.cat-card{background:#fff;border:1px solid #e8e6e0;border-radius:14px;padding:16px 12px;text-align:center;cursor:pointer;transition:all 0.15s}
+.cat-card:hover{border-color:#2d7a4f;transform:translateY(-2px)}
+.cat-card.active{border-color:#2d7a4f;background:#f0f9f4}
+.cat-icon{font-size:24px;margin-bottom:8px}
+.cat-name{font-size:11px;font-weight:600;color:#1a1a1a;margin-bottom:2px;font-family:'Sora',sans-serif}
+.cat-count{font-size:10px;color:#888}
+
+.listings-grid{display:flex;flex-direction:column;gap:12px}
+.listing-card{background:#fff;border:1px solid #e8e6e0;border-radius:16px;padding:20px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.listing-card:hover{border-color:#d0cdc6}
+.listing-left{flex:1}
+.listing-name{font-size:16px;font-weight:700;margin-bottom:4px;font-family:'Sora',sans-serif;letter-spacing:-0.3px}
+.listing-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
+.badge-verified{background:#e8f5ee;color:#1a6639}
+.badge-featured{background:#fef5e4;color:#9a6b0a}
+.listing-meta{font-size:12px;color:#888;margin-bottom:6px}
+.listing-desc{font-size:13px;color:#555;line-height:1.55}
+.listing-actions{display:flex;flex-direction:column;gap:6px;min-width:100px}
+.action-btn{padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;text-align:center;font-family:'DM Sans',sans-serif;border:none;white-space:nowrap;transition:all 0.15s}
+.action-call{background:#1a1a1a;color:#fff}
+.action-call:hover{background:#333}
+.action-wa{background:#25d366;color:#fff}
+.action-wa:hover{background:#1ebc59}
+.action-view{background:#f5f4f0;color:#1a1a1a;border:1px solid #e0ddd6}
+.action-view:hover{background:#ece9e1}
+
+.loading{text-align:center;padding:40px;color:#888;font-size:14px}
+.no-results{text-align:center;padding:40px;color:#888;font-size:14px}
+
+.register-section{background:#1a1a1a;border-radius:20px;padding:28px;max-width:900px;margin:0 auto 24px}
+.register-section h2{font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;letter-spacing:-0.3px}
+.register-section p{font-size:13px;color:#aaa;margin-bottom:20px}
+.form-grid{display:grid;gap:10px}
+@media(min-width:500px){.form-grid{grid-template-columns:1fr 1fr}}
+.form-input{padding:10px 14px;border:1px solid #333;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;color:#fff;background:#2a2a2a;outline:none}
+.form-input:focus{border-color:#2d7a4f}
+.form-input::placeholder{color:#666}
+.form-input option{background:#2a2a2a}
+textarea.form-input{resize:vertical;min-height:80px;grid-column:1/-1}
+.form-submit{grid-column:1/-1;padding:12px;background:#2d7a4f;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:background 0.15s}
+.form-submit:hover{background:#236040}
+.form-submit:disabled{background:#555;cursor:not-allowed}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px;padding:24px;max-width:420px;width:100%;max-height:85vh;overflow-y:auto}
+.modal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:#888;padding:0;line-height:1}
+.modal-name{font-size:20px;font-weight:700;font-family:'Sora',sans-serif;letter-spacing:-0.3px}
+.modal-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0ede6;font-size:13px;color:#555}
+.modal-row:last-child{border-bottom:none}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px}
+
+footer{background:#1a1a1a;color:#aaa;text-align:center;padding:20px 16px;font-size:12px}
+footer span{color:#2d7a4f;font-weight:600}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Langa<span>Service</span>.lk</div>
+  <div class="nav-links">
+    <button class="btn" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">List Business</button>
+    <button class="btn btn-primary" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">Browse</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">Sri Lanka Local Services</div>
+  <h1>Find trusted services<br><span>near you</span></h1>
+  <p>Phone repair, electricians, CCTV, welding, sound systems — discover verified local providers.</p>
+  <div class="search-box">
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="e.g. phone repair, CCTV, electrician...">
+      <div class="district-dropdown" id="districtDropdown">
+        <div class="district-selected" id="districtSelected" onclick="toggleDropdown()">
+          <span class="district-label" id="districtLabel">All Districts</span>
+          <span class="district-arrow">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 4L6 8L10 4" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <div class="district-menu" id="districtMenu">
+          <div class="district-option selected" data-value="" onclick="selectDistrict(this)"><span class="dot"></span>All Districts</div>
+          <div class="district-divider"></div>
+          <div class="district-option" data-value="Monaragala" onclick="selectDistrict(this)"><span class="dot"></span>Monaragala</div>
+          <div class="district-option" data-value="Badulla" onclick="selectDistrict(this)"><span class="dot"></span>Badulla</div>
+          <div class="district-option" data-value="Colombo" onclick="selectDistrict(this)"><span class="dot"></span>Colombo</div>
+          <div class="district-option" data-value="Kandy" onclick="selectDistrict(this)"><span class="dot"></span>Kandy</div>
+          <div class="district-option" data-value="Galle" onclick="selectDistrict(this)"><span class="dot"></span>Galle</div>
+          <div class="district-option" data-value="Matara" onclick="selectDistrict(this)"><span class="dot"></span>Matara</div>
+          <div class="district-option" data-value="Kurunegala" onclick="selectDistrict(this)"><span class="dot"></span>Kurunegala</div>
+          <div class="district-option" data-value="Ratnapura" onclick="selectDistrict(this)"><span class="dot"></span>Ratnapura</div>
+        </div>
+      </div>
+      <button class="search-btn" onclick="filterListings()">Search</button>
+    </div>
+  </div>
+  <div class="quick-tags">
+    <span class="quick-tag" onclick="quickSearch('phone repair')">Phone Repair</span>
+    <span class="quick-tag" onclick="quickSearch('CCTV')">CCTV</span>
+    <span class="quick-tag" onclick="quickSearch('electrician')">Electrician</span>
+    <span class="quick-tag" onclick="quickSearch('AC repair')">AC Repair</span>
+    <span class="quick-tag" onclick="quickSearch('welding')">Welding</span>
+    <span class="quick-tag" onclick="quickSearch('TV repair')">TV Repair</span>
+    <span class="quick-tag" onclick="quickSearch('tuition')">Tuition</span>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num" id="totalCount">...</div><div class="stat-label">Active Listings</div></div>
+  <div class="stat"><div class="stat-num" id="verifiedCount">...</div><div class="stat-label">Verified</div></div>
+  <div class="stat"><div class="stat-num">24</div><div class="stat-label">Districts</div></div>
+  <div class="stat"><div class="stat-num">Free</div><div class="stat-label">To List</div></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">Browse by category</h2>
+    <button class="see-all" onclick="clearCategory()">Clear filter</button>
+  </div>
+  <div class="cats-grid" id="categoriesGrid"></div>
+</div>
+
+<div class="section" id="listings">
+  <div class="section-header">
+    <h2 class="section-title">All listings</h2>
+    <span id="listingsCount" style="font-size:13px;color:#888"></span>
+  </div>
+  <div class="listings-grid" id="listingsGrid"><div class="loading">Loading listings from database...</div></div>
+</div>
+
+<div id="register" style="padding:0 16px 32px">
+  <div class="register-section">
+    <h2>Add your business — Free</h2>
+    <p>List your service, get customer leads via WhatsApp and phone. No fees, no commission.</p>
+    <div class="form-grid">
+      <input class="form-input" id="regName" placeholder="Business name *">
+      <input class="form-input" id="regPhone" placeholder="Phone number (077...) *">
+      <input class="form-input" id="regWhatsApp" placeholder="WhatsApp number">
+      <select class="form-input" id="regCategory">
+        <option value="">Select category *</option>
+        <option>Phone Repair</option><option>TV Repair</option><option>Electrician</option>
+        <option>CCTV Installation</option><option>Welding</option><option>Sound Repair</option>
+        <option>AC Repair</option><option>Tuition</option><option>Other</option>
+      </select>
+      <select class="form-input" id="regDistrict">
+        <option value="">Select district *</option>
+        <option>Monaragala</option><option>Badulla</option><option>Colombo</option>
+        <option>Kandy</option><option>Galle</option><option>Matara</option>
+        <option>Kurunegala</option><option>Ratnapura</option>
+      </select>
+      <input class="form-input" id="regCity" placeholder="Town / City">
+      <input class="form-input" id="regAddress" placeholder="Address">
+      <input class="form-input" id="regHours" placeholder="Working hours (e.g. 8AM - 6PM)">
+      <textarea class="form-input" id="regDesc" placeholder="Brief description of your services..."></textarea>
+      <button class="form-submit" id="submitBtn" onclick="submitListing()">Submit Free Listing</button>
+    </div>
+    <p id="submitMsg" style="font-size:13px;margin-top:12px;display:none"></p>
+  </div>
+</div>
+
+<footer>
+  <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:6px">Langa<span>Service</span>.lk</div>
+  <div>Connecting Sri Lankan communities with trusted local services</div>
+  <div style="margin-top:8px;color:#555">© 2025 LangaService.lk — Free for everyone</div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+// ===== SUPABASE CONFIG =====
+const SUPABASE_URL = 'https://ggypmgrjqfksbldmmyyr.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdneXBtZ3JqcWZrc2JsZG1teXlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MDE2MDUsImV4cCI6MjA5MjE3NzYwNX0.-GnwpESVVwjK9wS0ZYUWpbFYeqIyXi214xICxy4NguQ';
+
+async function supabase(path, options={}) {
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': options.prefer || ''
+    },
+    ...options
+  });
+  if (options.method === 'POST') return res;
+  return res.json();
+}
+
+// ===== STATE =====
+const categories = [
+  {name:'Phone Repair',icon:'📱',key:'Phone Repair'},
+  {name:'TV Repair',icon:'📺',key:'TV Repair'},
+  {name:'Electrician',icon:'💡',key:'Electrician'},
+  {name:'CCTV',icon:'📷',key:'CCTV Installation'},
+  {name:'Welding',icon:'🔧',key:'Welding'},
+  {name:'Sound Repair',icon:'🔊',key:'Sound Repair'},
+];
+
+let allProviders = [];
+let activeCategory = '';
+let currentDistrict = '';
+
+// ===== LOAD DATA FROM SUPABASE =====
+async function loadProviders() {
+  try {
+    const data = await supabase('providers?select=*&order=featured.desc,verified.desc,created_at.desc');
+    allProviders = data;
+    updateStats();
+    renderListings(allProviders);
+  } catch(e) {
+    document.getElementById('listingsGrid').innerHTML = '<div class="no-results">Connection error. Please refresh.</div>';
+  }
+}
+
+function updateStats() {
+  document.getElementById('totalCount').textContent = allProviders.length;
+  document.getElementById('verifiedCount').textContent = allProviders.filter(p=>p.verified).length;
+}
+
+// ===== CATEGORIES =====
+function renderCategories() {
+  document.getElementById('categoriesGrid').innerHTML = categories.map(c => {
+    const count = allProviders.filter(p => p.category === c.key).length;
+    return `<div class="cat-card${activeCategory===c.key?' active':''}" onclick="selectCategory('${c.key}')">
+      <div class="cat-icon">${c.icon}</div>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${count} listings</div>
+    </div>`;
+  }).join('');
+}
+
+function selectCategory(key) {
+  activeCategory = activeCategory === key ? '' : key;
+  renderCategories();
+  filterListings();
+}
+
+function clearCategory() {
+  activeCategory = '';
+  renderCategories();
+  filterListings();
+}
+
+// ===== DISTRICT DROPDOWN =====
+function toggleDropdown() {
+  document.getElementById('districtSelected').classList.toggle('open');
+  document.getElementById('districtMenu').classList.toggle('open');
+}
+
+function selectDistrict(el) {
+  currentDistrict = el.dataset.value;
+  document.getElementById('districtLabel').textContent = currentDistrict || 'All Districts';
+  document.querySelectorAll('.district-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('districtSelected').classList.remove('open');
+  document.getElementById('districtMenu').classList.remove('open');
+  filterListings();
+}
+
+document.addEventListener('click', function(e) {
+  if (!document.getElementById('districtDropdown').contains(e.target)) {
+    document.getElementById('districtSelected').classList.remove('open');
+    document.getElementById('districtMenu').classList.remove('open');
+  }
+});
+
+// ===== SEARCH & FILTER =====
+function quickSearch(term) {
+  document.getElementById('searchInput').value = term;
+  filterListings();
+  document.getElementById('listings').scrollIntoView({behavior:'smooth'});
+}
+
+function filterListings() {
+  const s = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = allProviders.filter(p => {
+    const ms = !s || (p.name+p.category+(p.description||'')+(p.city||'')).toLowerCase().includes(s);
+    const md = !currentDistrict || p.district === currentDistrict;
+    const mc = !activeCategory || p.category === activeCategory;
+    return ms && md && mc;
+  });
+  renderListings(filtered);
+}
+
+document.getElementById('searchInput').addEventListener('input', filterListings);
+
+// ===== RENDER LISTINGS =====
+function renderListings(list) {
+  renderCategories();
+  const g = document.getElementById('listingsGrid');
+  document.getElementById('listingsCount').textContent = list.length + ' result' + (list.length!==1?'s':'');
+  if (!list.length) {
+    g.innerHTML = '<div class="no-results">No results found. Try a different search or category.</div>';
+    return;
+  }
+  g.innerHTML = list.map(p => `
+    <div class="listing-card">
+      <div class="listing-left">
+        <div class="listing-name">${p.name}</div>
+        <div class="listing-badges">
+          ${p.verified ? '<span class="badge badge-verified">✓ Verified</span>' : ''}
+          ${p.featured ? '<span class="badge badge-featured">★ Featured</span>' : ''}
+        </div>
+        <div class="listing-meta">${p.category} · ${p.city||''}, ${p.district} · ${p.phone}</div>
+        <div class="listing-desc">${p.description||''}</div>
+      </div>
+      <div class="listing-actions">
+        <button class="action-btn action-call" onclick="window.open('tel:${p.phone.replace(/\s/g,'')}')">📞 Call</button>
+        ${p.whatsapp ? `<button class="action-btn action-wa" onclick="window.open('https://wa.me/${p.whatsapp}')">WhatsApp</button>` : ''}
+        <button class="action-btn action-view" onclick="openModal(${p.id})">Details</button>
+      </div>
+    </div>`).join('');
+}
+
+// ===== MODAL =====
+function openModal(id) {
+  const p = allProviders.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-header">
+      <div>
+        <div class="modal-name">${p.name}</div>
+        <div style="font-size:12px;color:#888;margin-top:2px">${p.category}</div>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('open')">✕</button>
+    </div>
+    <div class="listing-badges" style="margin-bottom:12px">
+      ${p.verified ? '<span class="badge badge-verified">✓ Verified</span>' : ''}
+      ${p.featured ? '<span class="badge badge-featured">★ Featured</span>' : ''}
+    </div>
+    ${p.address ? `<div class="modal-row">📍 <span>${p.address}, ${p.city||''}</span></div>` : ''}
+    <div class="modal-row">📞 <span><strong>${p.phone}</strong></span></div>
+    ${p.hours ? `<div class="modal-row">🕒 <span>${p.hours}</span></div>` : ''}
+    ${p.description ? `<div class="modal-row">🔧 <span>${p.description}</span></div>` : ''}
+    <div class="modal-actions">
+      <button class="action-btn action-call" onclick="window.open('tel:${p.phone.replace(/\s/g,'')}')">📞 Call</button>
+      ${p.whatsapp ? `<button class="action-btn action-wa" onclick="window.open('https://wa.me/${p.whatsapp}')">WhatsApp</button>` : '<div></div>'}
+      <button class="action-btn action-view" style="background:#f5f4f0;color:#1a1a1a;border:1px solid #e0ddd6" onclick="window.open('https://maps.google.com?q=${encodeURIComponent((p.address||'')+(p.city||'')+' Sri Lanka')}')">Map</button>
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target.id === 'modalOverlay') document.getElementById('modalOverlay').classList.remove('open');
+}
+
+// ===== SUBMIT LISTING TO SUPABASE =====
+async function submitListing() {
+  const name = document.getElementById('regName').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const category = document.getElementById('regCategory').value;
+  const district = document.getElementById('regDistrict').value;
+  const whatsapp = document.getElementById('regWhatsApp').value.trim();
+  const city = document.getElementById('regCity').value.trim();
+  const address = document.getElementById('regAddress').value.trim();
+  const hours = document.getElementById('regHours').value.trim();
+  const description = document.getElementById('regDesc').value.trim();
+
+  if (!name || !phone || !category || !district) {
+    alert('Please fill in all required fields (*).');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  try {
+    const res = await supabase('providers', {
+      method: 'POST',
+      prefer: 'return=minimal',
+      body: JSON.stringify({name, phone, category, district, whatsapp, city, address, hours, description, verified: false, featured: false})
+    });
+
+    const msg = document.getElementById('submitMsg');
+    if (res.ok) {
+      msg.style.color = '#7dd3a8';
+      msg.textContent = '✓ Submitted! We will review and approve within 24 hours.';
+      ['regName','regPhone','regWhatsApp','regCity','regAddress','regHours','regDesc'].forEach(id => document.getElementById(id).value='');
+      document.getElementById('regCategory').value='';
+      document.getElementById('regDistrict').value='';
+      loadProviders();
+    } else {
+      msg.style.color = '#f09595';
+      msg.textContent = '✗ Something went wrong. Please try again.';
+    }
+    msg.style.display = 'block';
+  } catch(e) {
+    document.getElementById('submitMsg').style.color = '#f09595';
+    document.getElementById('submitMsg').textContent = '✗ Network error. Please try again.';
+    document.getElementById('submitMsg').style.display = 'block';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Submit Free Listing';
+}
+
+// ===== INIT =====
+renderCategories();
+loadProviders();
+</script>
+</body>
+</html>
