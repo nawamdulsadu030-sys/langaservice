@@ -233,7 +233,7 @@ footer .flogo span{color:#2d7a4f}
     <div class="form-grid">
       <input class="form-input" id="regName" placeholder="Business name *">
       <input class="form-input" id="regPhone" placeholder="Phone number *">
-      <input class="form-input" id="regWhatsApp" placeholder="WhatsApp number">
+      <input class="form-input" id="regWhatsApp" placeholder="WhatsApp (e.g. 0771234567)">
       <select class="form-input" id="regCategory">
         <option value="">Select category *</option>
         <option>Phone Repair</option><option>TV Repair</option><option>Electrician</option>
@@ -440,7 +440,7 @@ async function submitListing(){
       method:'POST',prefer:'return=minimal',
       body:JSON.stringify({
         name,phone,category,district,
-        whatsapp:document.getElementById('regWhatsApp').value.trim(),
+        whatsapp:formatWA(document.getElementById('regWhatsApp').value.trim()),
         city:document.getElementById('regCity').value.trim(),
         address:document.getElementById('regAddress').value.trim(),
         hours:document.getElementById('regHours').value.trim(),
@@ -465,6 +465,14 @@ async function submitListing(){
     document.getElementById('submitMsg').style.display='block';
   }
   btn.disabled=false;btn.textContent='Submit Free Listing';
+}
+
+function formatWA(num){
+  if(!num)return'';
+  num=num.replace(/\s|-/g,'');
+  if(num.startsWith('0'))num='94'+num.slice(1);
+  if(!num.startsWith('94'))num='94'+num;
+  return num;
 }
 
 loadProviders();
